@@ -1,64 +1,117 @@
+/* Reset global styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* General body and font styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f9f9f9 50%, #e1e1e1 50%); /* Suave gradiente */
+    color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
+    padding: 0 10px;
+    transition: background 0.5s ease-in-out; /* Transición de fondo */
 }
 
+/* Container for the main content */
 .container {
     text-align: center;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    max-width: 400px;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px; /* Bordes más redondeados */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Sombra más suave */
+    width: 100%;
+    max-width: 500px;
+    margin: 20px;
+    transition: transform 0.3s ease-in-out; /* Efecto de transformación */
 }
 
+.container:hover {
+    transform: scale(1.05); /* Efecto de crecimiento al pasar el ratón */
+}
+
+/* Header styles */
 h1 {
+    font-size: 26px;
     color: #333;
     margin-bottom: 20px;
+    letter-spacing: 0.5px;
 }
 
-button {
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+/* Description paragraph */
+p {
     font-size: 16px;
+    color: #555;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+/* Button styles */
+button {
+    background: linear-gradient(45deg, #007BFF, #0056b3); /* Gradiente en el botón */
+    color: #ffffff;
+    border: none;
+    padding: 14px 28px;
+    font-size: 18px;
+    border-radius: 30px; /* Bordes del botón más redondeados */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 220px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 button:hover {
-    background-color: #0056b3;
+    background: linear-gradient(45deg, #0056b3, #007BFF); /* Gradiente invertido en hover */
+    transform: translateY(-4px); /* Efecto de elevación al pasar el ratón */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Result section styles */
 .result {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f1f1f1;
-    border-radius: 5px;
+    margin-top: 30px;
+    padding: 25px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
     display: none;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.5s ease-in-out; /* Animación suave para la aparición */
 }
 
 #loading {
     color: #999;
 }
 
+/* Error and success styles */
 .error {
     color: red;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .success {
     color: green;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 22px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .container {
+        padding: 20px;
+    }
 }

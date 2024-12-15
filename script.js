@@ -16,7 +16,7 @@ document.getElementById('btn-consultar').addEventListener('click', function () {
                 .then(response => response.text())
                 .then(data => {
                     // Mostrar la respuesta del catastro en la página
-                    resultDiv.innerHTML = `<h3>Resultado:</h3><p>${data}</p>`;
+                    resultDiv.innerHTML = `<h3>El padron es:</h3><p>${data}</p>`;
                 })
                 .catch(error => {
                     console.error('Error al hacer la consulta:', error);
