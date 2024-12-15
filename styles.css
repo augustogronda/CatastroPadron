@@ -8,80 +8,81 @@
 /* General body and font styles */
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #f9f9f9 50%, #e1e1e1 50%); /* Suave gradiente */
+    background: linear-gradient(135deg, #f9f9f9 50%, #e1e1e1 50%);
     color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    padding: 0 10px;
-    transition: background 0.5s ease-in-out; /* Transición de fondo */
+    min-height: 100vh;
+    padding: 0 5%;
+    transition: background 0.5s ease-in-out;
 }
 
 /* Container for the main content */
 .container {
     text-align: center;
     background-color: #ffffff;
-    padding: 30px;
-    border-radius: 12px; /* Bordes más redondeados */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Sombra más suave */
+    padding: 5%;
+    border-radius: 1.2rem; /* Usando rem en lugar de px */
+    box-shadow: 0 0.4rem 1.5rem rgba(0, 0, 0, 0.15);
     width: 100%;
-    max-width: 500px;
-    margin: 20px;
-    transition: transform 0.3s ease-in-out; /* Efecto de transformación */
+    max-width: 32rem; /* Usamos rem para un tamaño adaptable */
+    margin: 2rem 0;
+    transition: transform 0.3s ease-in-out;
 }
 
 .container:hover {
-    transform: scale(1.05); /* Efecto de crecimiento al pasar el ratón */
+    transform: scale(1.05);
 }
 
 /* Header styles */
 h1 {
-    font-size: 26px;
+    font-size: 2rem; /* Usando rem */
     color: #333;
-    margin-bottom: 20px;
-    letter-spacing: 0.5px;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05rem;
 }
 
 /* Description paragraph */
 p {
-    font-size: 16px;
+    font-size: 1rem;
     color: #555;
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
     font-weight: 500;
 }
 
 /* Button styles */
 button {
-    background: linear-gradient(45deg, #007BFF, #0056b3); /* Gradiente en el botón */
+    background: linear-gradient(45deg, #007BFF, #0056b3);
     color: #ffffff;
     border: none;
-    padding: 14px 28px;
-    font-size: 18px;
-    border-radius: 30px; /* Bordes del botón más redondeados */
+    padding: 1rem 2rem;
+    font-size: 1.2rem; /* Usamos rem */
+    border-radius: 2rem; /* Bordes más redondeados */
     cursor: pointer;
     transition: all 0.3s ease;
-    width: 220px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 20rem; /* Limitar el tamaño máximo */
+    margin-bottom: 2rem;
+    box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.1);
 }
 
 button:hover {
-    background: linear-gradient(45deg, #0056b3, #007BFF); /* Gradiente invertido en hover */
-    transform: translateY(-4px); /* Efecto de elevación al pasar el ratón */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(45deg, #0056b3, #007BFF);
+    transform: translateY(-0.4rem); /* Efecto de elevación más suave */
+    box-shadow: 0 0.6rem 1.5rem rgba(0, 0, 0, 0.2);
 }
 
 /* Result section styles */
 .result {
-    margin-top: 30px;
-    padding: 25px;
+    margin-top: 2rem;
+    padding: 2rem;
     background-color: #f7f7f7;
-    border-radius: 10px;
+    border-radius: 1rem;
     display: none;
-    font-size: 14px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: opacity 0.5s ease-in-out; /* Animación suave para la aparición */
+    font-size: 1rem;
+    box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.1);
+    transition: opacity 0.5s ease-in-out;
 }
 
 #loading {
@@ -91,27 +92,37 @@ button:hover {
 /* Error and success styles */
 .error {
     color: red;
-    font-size: 16px;
+    font-size: 1.1rem;
     font-weight: bold;
 }
 
 .success {
     color: green;
-    font-size: 16px;
+    font-size: 1.1rem;
     font-weight: bold;
 }
 
 /* Mobile responsiveness */
-@media (max-width: 600px) {
+@media (max-width: 767px) {
     h1 {
-        font-size: 22px;
+        font-size: 1.8rem;
+    }
+
+    p {
+        font-size: 0.9rem;
     }
 
     button {
-        width: 100%;
+        font-size: 1rem;
+        padding: 1rem;
     }
 
     .container {
-        padding: 20px;
+        padding: 4%;
+        max-width: 100%;
+    }
+
+    .result {
+        font-size: 0.9rem;
     }
 }
