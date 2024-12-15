@@ -1,88 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Consultar Padron</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-    button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    #link {
-      margin-top: 20px;
-      display: none;
-      text-decoration: none;
-      color: #007BFF;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta Catastro Tucumán</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Consulta Catastral</h1>
-  <p>Haz clic en el botón para obtener tu ubicación y generar el enlace de consulta.</p>
-  <button id="getLocation">Obtener Ubicación</button>
-  <p id="status"></p>
-  <a id="link" target="_blank">Abrir Consulta</a>
+    <div class="container">
+        <h1>Consulta Catastro Tucumán</h1>
+        <p>Obtén información del catastro con tu ubicación actual.</p>
 
-  <script>
-    document.getElementById('getLocation').addEventListener('click', function() {
-      const status = document.getElementById('status');
-      const link = document.getElementById('link');
+        <button id="btn-consultar">Consultar Catastro</button>
 
-      // Verifica si el navegador soporta geolocalización
-      if (!navigator.geolocation) {
-        status.textContent = "La geolocalización no es soportada por tu navegador.";
-        return;
-      }
+        <div id="result" class="result">
+            <p id="loading">Cargando información...</p>
+        </div>
+    </div>
 
-      status.textContent = "Obteniendo ubicación...";
-
-      // Obtiene la ubicación del usuario
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const latitude = position.coords.latitude.toFixed(7);
-          const longitude = position.coords.longitude.toFixed(7);
-
-          // Genera la URL con las coordenadas
-          const url = `https://aplicaciones.catastrotucuman.gov.ar/android/frmParcelageo.asp?tc=0&lat=${latitude}&lon=${longitude}&pad=0`;
-
-          // Actualiza el enlace
-          link.href = url;
-          link.textContent = "Abrir Consulta Catastral";
-          link.style.display = "block";
-          status.textContent = "¡Ubicación obtenida! Haz clic en el enlace y veras el padron en el que estas.";
-        },
-        (error) => {
-          switch (error.code) {
-            case error.PERMISSION_DENIED:
-              status.textContent = "Permiso denegado para obtener la ubicación.";
-              break;
-            case error.POSITION_UNAVAILABLE:
-              status.textContent = "La información de ubicación no está disponible.";
-              break;
-            case error.TIMEOUT:
-              status.textContent = "La solicitud de ubicación ha expirado.";
-              break;
-            default:
-              status.textContent = "Ocurrió un error desconocido.";
-          }
-        }
-      );
-    });
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
