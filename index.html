@@ -1,34 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
-<!-- Icono para iOS -->
-<link rel="apple-touch-icon" href="/assets/icons/180180.png" sizes="180x180">
-
-<!-- Icono para Android -->
-<link rel="icon" href="/assets/icons/192192.png" sizes="192x192">
-
-<!-- Otros iconos (opcional) -->
-<link rel="icon" href="/assets/icons/3232.png" sizes="32x32">
-
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta de Padron</title>
+    <title>Consulta de Padrón y Mapa</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Realizar Consulta</h1>
-        <p>Obtén información del del padron con tu ubicación actual en Tucuman.</p>
-        
-
-        <button id="btn-consultar">Realizar Consulta</button>
-
-        <div id="result" class="result">
-            <p id="loading">Cargando información...</p>
-        </div>
+        <h1>Consulta de Padrón y Mapa</h1>
+        <p>Presiona el botón para consultar el padrón basado en tu ubicación GPS.</p>
+        <button id="btn-consultar">Consultar Padrón</button>
+        <div id="loading" style="display: none;">Cargando datos...</div>
+        <div id="result" class="result"></div>
+        <div id="map" class="result" style="display: none;"></div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>

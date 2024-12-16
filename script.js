@@ -1,51 +1,69 @@
-document.getElementById('btn-consultar').addEventListener('click', function() {
-    // Mostrar mensaje de carga
+document.getElementById('btn-consultar').addEventListener('click', function () {
     document.getElementById('loading').style.display = 'block';
     document.getElementById('result').style.display = 'none';
 
-    // Verificar si el navegador soporta la geolocalización
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            // Obtener las coordenadas del GPS
+        navigator.geolocation.getCurrentPosition(function (position) {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
-            // Mostrar el mensaje de "cargando"
-            const resultDiv = document.getElementById('result');
-            resultDiv.style.display = 'block';
-            document.getElementById('loading').style.display = 'block';
 
-            // Crear la URL con las coordenadas obtenidas
-            const url = `https://aplicaciones.catastrotucuman.gov.ar/android/frmParcelageo.asp?tc=0&lat=${latitude}&lon=${longitude}&pad=0`;
+            const urlPadron = `https://aplicaciones.catastrotucuman.gov.ar/android/frmParcelageo.asp?tc=0&lat=${latitude}&lon=${longitude}&pad=0`;
 
-            // Hacer la solicitud a la URL
-            fetch(url)
+            fetch(urlPadron)
                 .then(response => response.text())
                 .then(data => {
-                    // Mostrar la respuesta en el resultado
                     document.getElementById('loading').style.display = 'none';
-                    document.getElementById('result').style.display = 'block';
-                    document.getElementById('result').innerHTML =  `<h3>El padron es:</h3><p>${data}</p>`;
+                    const padron = data.trim();
+
+                    const urlCoords = `https://aplicaciones.catastrotucuman.gov.ar/frmparcelageo.asp?txtpadron=${padron}`;
+                    return fetch(urlCoords).then(response => response.text()).then(coordsData => ({ padron, coordsData }));
+                })
+                .then(({ padron, coordsData }) => {
+                    const coordsMatch = coordsData.match(/(\d+\.\d+),(\d+\.\d+)/);
+                    if (!coordsMatch) {
+                        throw new Error('No se encontraron coordenadas en la respuesta.');
+                    }
+
+                    const este = parseFloat(coordsMatch[1]);
+                    const norte = parseFloat(coordsMatch[2]);
+
+                    const bbox = {
+                        xmin: este - 4000,
+                        ymin: norte - 4000,
+                        xmax: este + 4000,
+                        ymax: norte + 4000,
+                    };
+
+                    // Obtener dimensiones de la pantalla
+                    const width = window.innerWidth;
+                    const height = window.innerHeight;
+
+                    const urlMapa = `https://mapas.catastrotucuman.gov.ar/geoserver/dgct/wms?LAYERS=dgct%3Acalles,dgct%3APARCELASR&STYLES=&FORMAT=image%2Fpng&TRANSPARENT=TRUE&WRAPDATELINE=true&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A5345&BBOX=${bbox.xmin},${bbox.ymin},${bbox.xmax},${bbox.ymax}&WIDTH=${width}&HEIGHT=${height}`;
+
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.style.display = 'block';
+                    resultDiv.innerHTML = `
+                        <h3>Resultado de la Consulta</h3>
+                        <p><strong>Padrón:</strong> ${padron}</p>
+                        <p><strong>Coordenadas:</strong> Este: ${este}, Norte: ${norte}</p>
+                        <button id="map-button" class="map-button">Abrir Mapa</button>
+                    `;
+
+                    // Añadir funcionalidad al botón para abrir el mapa en una nueva pestaña
+                    document.getElementById('map-button').addEventListener('click', () => {
+                        window.open(urlMapa, '_blank');
+                    });
                 })
                 .catch(error => {
                     document.getElementById('loading').style.display = 'none';
-                    document.getElementById('result').style.display = 'block';
-                    document.getElementById('result').innerHTML = `<p class="error">Error al obtener la información: ${error}</p>`;
+                    document.getElementById('result').innerHTML = `<p class="error">Error: ${error.message}</p>`;
                 });
-
-        }, function(error) {
-            // En caso de error al obtener la geolocalización
+        }, function (error) {
             document.getElementById('loading').style.display = 'none';
-            document.getElementById('result').style.display = 'block';
-            document.getElementById('result').innerHTML = `<p class="error">No se pudo obtener la ubicación del GPS. Por favor, asegúrese de que los permisos están habilitados y que el GPS está activo.</p>`;
-        }, {
-            enableHighAccuracy: true,  // Asegura que se utilice el GPS si está disponible
-            timeout: 10000,           // Tiempo de espera para obtener la ubicación
-            maximumAge: 0             // No usar una ubicación en caché
+            document.getElementById('result').innerHTML = `<p class="error">No se pudo obtener la ubicación: ${error.message}</p>`;
         });
     } else {
-        // Si el navegador no soporta la geolocalización
         document.getElementById('loading').style.display = 'none';
-        document.getElementById('result').style.display = 'block';
         document.getElementById('result').innerHTML = `<p class="error">La geolocalización no está soportada por este navegador.</p>`;
     }
 });
