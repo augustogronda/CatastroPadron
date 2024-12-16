@@ -15,7 +15,7 @@ document.getElementById('btn-consultar').addEventListener('click', function () {
                     document.getElementById('loading').style.display = 'none';
                     const padron = data.trim();
 
-                    const urlCoords = `https://aplicaciones.catastrotucuman.gov.ar/frmparcelageo.asp?txtpadron=${padron}`;
+                    const urlCoords = `https://aplicaciones.catastrotucuman.gov.ar/frmparcelageo.asp?txtpadron=120008`;
                     return fetch(urlCoords).then(response => response.text()).then(coordsData => ({ padron, coordsData }));
                 })
                 .then(({ padron, coordsData }) => {
@@ -28,10 +28,10 @@ document.getElementById('btn-consultar').addEventListener('click', function () {
                     const norte = parseFloat(coordsMatch[2]);
 
                     const bbox = {
-                        xmin: este - 800,
-                        ymin: norte - 800,
-                        xmax: este + 800,
-                        ymax: norte + 800,
+                        xmin: este - 150,
+                        ymin: norte - 150,
+                        xmax: este + 150,
+                        ymax: norte + 150,
                     };
 
                     // Obtener dimensiones de la pantalla
