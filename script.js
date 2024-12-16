@@ -1,32 +1,51 @@
-document.getElementById('btn-consultar').addEventListener('click', function () {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
+document.getElementById('btn-consultar').addEventListener('click', function() {
+    // Mostrar mensaje de carga
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('result').style.display = 'none';
 
+    // Verificar si el navegador soporta la geolocalización
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            // Obtener las coordenadas del GPS
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
             // Mostrar el mensaje de "cargando"
             const resultDiv = document.getElementById('result');
             resultDiv.style.display = 'block';
             document.getElementById('loading').style.display = 'block';
 
-            // Realizar la consulta al catastro
-            const url = `https://aplicaciones.catastrotucuman.gov.ar/android/frmParcelageo.asp?tc=0&lat=${lat}&lon=${lon}&pad=0`;
+            // Crear la URL con las coordenadas obtenidas
+            const url = `https://aplicaciones.catastrotucuman.gov.ar/android/frmParcelageo.asp?tc=0&lat=${latitude}&lon=${longitude}&pad=0`;
 
+            // Hacer la solicitud a la URL
             fetch(url)
                 .then(response => response.text())
                 .then(data => {
-                    // Mostrar la respuesta del catastro en la página
-                    resultDiv.innerHTML = `<h3>El padron es:</h3><p>${data}</p>`;
+                    // Mostrar la respuesta en el resultado
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('result').style.display = 'block';
+                    document.getElementById('result').innerHTML =  `<h3>El padron es:</h3><p>${data}</p>`;
                 })
                 .catch(error => {
-                    console.error('Error al hacer la consulta:', error);
-                    resultDiv.innerHTML = `<p class="error">Hubo un error al consultar la información. Intenta nuevamente.</p>`;
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('result').style.display = 'block';
+                    document.getElementById('result').innerHTML = `<p class="error">Error al obtener la información: ${error}</p>`;
                 });
-        }, function (error) {
-            console.error('Error al obtener la ubicación:', error);
-            resultDiv.innerHTML = `<p class="error">No se pudo obtener la ubicación. Asegúrate de permitir el acceso a la ubicación.</p>`;
+
+        }, function(error) {
+            // En caso de error al obtener la geolocalización
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('result').innerHTML = `<p class="error">No se pudo obtener la ubicación del GPS. Por favor, asegúrese de que los permisos están habilitados y que el GPS está activo.</p>`;
+        }, {
+            enableHighAccuracy: true,  // Asegura que se utilice el GPS si está disponible
+            timeout: 10000,           // Tiempo de espera para obtener la ubicación
+            maximumAge: 0             // No usar una ubicación en caché
         });
     } else {
-        resultDiv.innerHTML = `<p class="error">Tu navegador no soporta la geolocalización.</p>`;
+        // Si el navegador no soporta la geolocalización
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('result').style.display = 'block';
+        document.getElementById('result').innerHTML = `<p class="error">La geolocalización no está soportada por este navegador.</p>`;
     }
 });
