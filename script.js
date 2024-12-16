@@ -28,15 +28,15 @@ document.getElementById('btn-consultar').addEventListener('click', function () {
                     const norte = parseFloat(coordsMatch[2]);
 
                     const bbox = {
-                        xmin: este - 4000,
-                        ymin: norte - 4000,
-                        xmax: este + 4000,
-                        ymax: norte + 4000,
+                        xmin: este - 800,
+                        ymin: norte - 800,
+                        xmax: este + 800,
+                        ymax: norte + 800,
                     };
 
                     // Obtener dimensiones de la pantalla
-                    const width = window.innerWidth;
-                    const height = window.innerHeight;
+                    const width = 828;
+                    const height = 1792;
 
                     const urlMapa = `https://mapas.catastrotucuman.gov.ar/geoserver/dgct/wms?LAYERS=dgct%3Acalles,dgct%3APARCELASR&STYLES=&FORMAT=image%2Fpng&TRANSPARENT=TRUE&WRAPDATELINE=true&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A5345&BBOX=${bbox.xmin},${bbox.ymin},${bbox.xmax},${bbox.ymax}&WIDTH=${width}&HEIGHT=${height}`;
 
@@ -45,7 +45,6 @@ document.getElementById('btn-consultar').addEventListener('click', function () {
                     resultDiv.innerHTML = `
                         <h3>Resultado de la Consulta</h3>
                         <p><strong>Padrón:</strong> ${padron}</p>
-                        <p><strong>Coordenadas:</strong> Este: ${este}, Norte: ${norte}</p>
                         <button id="map-button" class="map-button">Abrir Mapa</button>
                     `;
 
