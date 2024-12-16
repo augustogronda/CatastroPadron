@@ -15,7 +15,7 @@ document.getElementById('btn-consultar').addEventListener('click', function () {
                     document.getElementById('loading').style.display = 'none';
                     const padron = data.trim();
 
-                    const urlCoords = `https://aplicaciones.catastrotucuman.gov.ar/frmparcelageo.asp?txtpadron=120008`;
+                    const urlCoords = `https://aplicaciones.catastrotucuman.gov.ar/frmparcelageo.asp?txtpadron=${padron}`;
                     return fetch(urlCoords).then(response => response.text()).then(coordsData => ({ padron, coordsData }));
                 })
                 .then(({ padron, coordsData }) => {
