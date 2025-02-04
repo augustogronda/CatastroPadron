@@ -84,14 +84,14 @@ document.getElementById('btn-consultar').addEventListener('click', function () {
                         }
                     });
 
-                    document.getElementById('kml-button').addEventListener('click', () => {
-                        const link = document.createElement('a');
-                        link.href = kmlDownload;
-                        link.download = `padron_${padron}.kml`;
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                    });
+                    // document.getElementById('kml-button').addEventListener('click', () => {
+                    //     const link = document.createElement('a');
+                    //     link.href = kmlDownload;
+                    //     link.download = `padron_${padron}.kml`;
+                    //     document.body.appendChild(link);
+                    //     link.click();
+                    //     document.body.removeChild(link);
+                    // });
 
                     document.getElementById('parcel-button').addEventListener('click', () => {
                         const parcelContainer = document.getElementById('parcel-container');
