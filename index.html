@@ -14,12 +14,29 @@
 
 <body>
     <div class="container">
-        <h1>Consulta de Padrón</h1>
-        <p>Presiona el botón para consultar el padrón basado en tu geolocalizacion.</p>
-        <button id="btn-consultar">Consultar Padrón</button>
-        <div id="loading" style="display: none;">Cargando datos...</div>
-        <div id="result" class="result"></div>
-        <div id="map" class="result" style="display: none;"></div>
+        <h1>Consulta de Padrón Catastral</h1>
+        <p>Seleccione su método de consulta:</p>
+        
+        <button id="btn-consultar">
+            <span class="loading-pulse">📍</span> Usar mi ubicación
+            
+        </button>
+        
+        <div class="input-group">
+            <input type="text" 
+                   id="padron-input" 
+                   placeholder="Ingrese el Numero de padron"
+                   inputmode="numeric"
+                   pattern="\d*"
+                   maxlength="15">
+            <button id="btn-consultar-manual">Buscar por número de padrón</button>
+        </div>
+
+        <div id="loading" aria-live="polite">
+            <div class="loading-pulse">Buscando información...</div>
+        </div>
+        
+        <div id="result" class="result" role="region" aria-live="polite"></div>
     </div>
     <script src="script.js"></script>
 </body>
