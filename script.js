@@ -94,15 +94,18 @@ function fetchPadronData(padron) {
                             parcelContainer.innerHTML = '<div id="map" style="height: 400px;"></div>';
 
                             const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                                attribution: '© OpenStreetMap contributors'
+                                attribution: '© OpenStreetMap contributors',
+                                maxZoom: 21
                             });
 
                             const googleLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-                                attribution: '© Google'
+                                attribution: '© Google',
+                                maxZoom: 21
                             });
 
-                            const map = L.map('map').fitBounds(latlngs);
+                            const map = L.map('map',).fitBounds(latlngs);
                             googleLayer.addTo(map);
+                            map.setZoom(19);
 
                             L.control.layers({
                                 'Google Satellite': googleLayer,
