@@ -187,3 +187,79 @@ button:hover:not(:disabled) {
 .loading-pulse {
     animation: pulse 1.5s infinite;
 }
+
+/* Desktop responsive (a partir de 1024px) */
+@media (min-width: 1024px) {
+    body {
+        padding: 3rem 10%;
+        align-items: center;
+    }
+
+    .container {
+        max-width: 800px;
+        padding: 3rem;
+        margin: 2rem auto;
+    }
+
+    h1 {
+        font-size: 2.4rem;
+        margin-bottom: 2rem;
+    }
+
+    .input-group {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+
+    #padron-input {
+        width: 300px;
+        padding: 1.2rem;
+        font-size: 1.1rem;
+    }
+
+    button {
+        width: auto;
+        padding: 1.2rem 2.5rem;
+        font-size: 1.1rem;
+        margin: 0.8rem 0;
+    }
+
+    #btn-consultar {
+        margin-bottom: 1.5rem;
+    }
+
+    .result {
+        padding: 2rem;
+        margin-top: 2.5rem;
+    }
+
+    /* Ajustes específicos para los mapas */
+    #map-container img {
+        max-width: 720px;
+        margin: 1.5rem auto;
+    }
+
+    #parcel-container #map {
+        height: 500px;
+    }
+
+    .map-button, .parcel-button, .padron-button {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        margin: 0.5rem;
+    }
+}
+
+/* Pantallas muy grandes (opcional) */
+@media (min-width: 1440px) {
+    .container {
+        max-width: 1000px;
+        padding: 4rem;
+    }
+    
+    h1 {
+        font-size: 2.8rem;
+    }
+}

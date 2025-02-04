@@ -17,21 +17,22 @@
         <h1>Consulta de Padrón Catastral</h1>
         <p>Seleccione su método de consulta:</p>
         
-        <button id="btn-consultar">
-            <span class="loading-pulse">📍</span> Usar mi ubicación
+        <div class="desktop-group"> <!-- Nueva clase contenedora -->
+            <button id="btn-consultar">
+                <span class="loading-pulse">📍</span> Usar mi ubicación
+            </button>
             
-        </button>
-        
-        <div class="input-group">
-            <input type="text" 
-                   id="padron-input" 
-                   placeholder="Ingrese el Numero de padron"
-                   inputmode="numeric"
-                   pattern="\d*"
-                   maxlength="15">
-            <button id="btn-consultar-manual">Buscar por número de padrón</button>
+            <div class="input-group">
+                <input type="text" 
+                       id="padron-input" 
+                       placeholder="Ingresar numero de padron"
+                       inputmode="numeric"
+                       pattern="\d*"
+                       maxlength="15">
+                <button id="btn-consultar-manual">Buscar padrón</button>
+            </div>
         </div>
-
+    
         <div id="loading" aria-live="polite">
             <div class="loading-pulse">Buscando información...</div>
         </div>
