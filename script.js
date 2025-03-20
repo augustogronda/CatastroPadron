@@ -1,3 +1,7 @@
+// Declarar las variables en el ámbito global
+let latitud;  
+let longitud;
+
 // Función compartida para ambos métodos de consulta
 function fetchPadronData(padron) {
     document.getElementById('loading').style.display = 'block';
@@ -15,6 +19,13 @@ function fetchPadronData(padron) {
 
             const este = parseFloat(coordsMatch[1]);
             const norte = parseFloat(coordsMatch[2]);
+
+            // Asignar las coordenadas a las variables globales
+            latitud = norte;  // Usar norte como latitud
+            longitud = este;   // Usar este como longitud
+
+            // Loguear las coordenadas
+            console.log(`Latitud: ${latitud}, Longitud: ${longitud}`);
 
             const bbox = {
                 xmin: este - 150,
@@ -39,6 +50,7 @@ function fetchPadronData(padron) {
                 <div id="map-container" style="margin-top: 15px; display: none;"></div>
                 <button id="parcel-button" class="parcel-button" style="margin-top: 10px;">Mapa Satelital</button>
                 <div id="parcel-container" style="margin-top: 15px; display: none;"></div>
+                <button id="google-maps-button" class="google-maps-button">Ver en Google Maps</button>
                 <button id="padron-button" class="padron-button">Cerrar Padrón</button>
             `;
 
@@ -87,6 +99,7 @@ function fetchPadronData(padron) {
 
                             const latlngs = coords.map(coord => {
                                 const [lng, lat] = coord.split(',').map(Number);
+                                // Loguear las coordenadas del KML
                                 return [lat, lng];
                             });
 
@@ -125,6 +138,19 @@ function fetchPadronData(padron) {
                     parcelButton.textContent = 'Mostrar Parcela';
                     isParcelShown = false;
                 }
+            });
+
+            document.getElementById('google-maps-button').addEventListener('click', () => {
+                // Define the coordinate systems
+                proj4.defs('EPSG:5345', '+proj=tmerc +lat_0=-90 +lon_0=-66 +k=1 +x_0=3500000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+                proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs');
+
+                // Convert coordinates from EPSG:5345 to EPSG:4326
+                const [wgs84Long, wgs84Lat] = proj4('EPSG:5345', 'EPSG:4326', [longitud, latitud]);
+
+                // Modified URL to include a marker
+                const googleMapsUrl = `https://www.google.com/maps?q=${wgs84Lat},${wgs84Long}&z=19`;
+                window.open(googleMapsUrl, '_blank');
             });
 
             document.getElementById('loading').style.display = 'none';
