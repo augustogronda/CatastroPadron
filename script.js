@@ -51,6 +51,7 @@ function fetchPadronData(padron) {
                 <button id="parcel-button" class="parcel-button" style="margin-top: 10px;">Mapa Satelital</button>
                 <div id="parcel-container" style="margin-top: 15px; display: none;"></div>
                 <button id="google-maps-button" class="google-maps-button">Ver en Google Maps</button>
+                <button id="download-kml" class="download-kml" style="margin-top: 10px;">Descargar KML</button>
                 <button id="padron-button" class="padron-button">Cerrar Padrón</button>
             `;
 
@@ -151,6 +152,11 @@ function fetchPadronData(padron) {
                 // Modified URL to include a marker
                 const googleMapsUrl = `https://www.google.com/maps?q=${wgs84Lat},${wgs84Long}&z=19`;
                 window.open(googleMapsUrl, '_blank');
+            });
+
+            // Agregar el evento para el botón de descarga KML
+            document.getElementById('download-kml').addEventListener('click', () => {
+                window.location.href = kmlDownload;
             });
 
             document.getElementById('loading').style.display = 'none';
