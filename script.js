@@ -52,6 +52,7 @@ function fetchPadronData(padron) {
                 <div id="parcel-container" style="margin-top: 15px; display: none;"></div>
                 <button id="google-maps-button" class="google-maps-button">Ver en Google Maps</button>
                 <button id="download-kml" class="download-kml" style="margin-top: 10px;">Descargar KML</button>
+                <button id="editor-button" class="editor-button" style="margin-top: 10px;">Editor en Línea</button>
                 <button id="padron-button" class="padron-button">Cerrar Padrón</button>
             `;
 
@@ -68,6 +69,10 @@ function fetchPadronData(padron) {
             document.getElementById('padron-button').addEventListener('click', () => {
                 closeAllContainers();
                 document.getElementById('padron-button').textContent = 'Consultar Padrón';
+            });
+
+            document.getElementById('editor-button').addEventListener('click', () => {
+                openEditorOnline(kmlDownload);
             });
 
             document.getElementById('map-button').addEventListener('click', () => {
@@ -126,7 +131,15 @@ function fetchPadronData(padron) {
                                 'OpenStreetMap': osmLayer,
                             }).addTo(map);
 
-                            L.polygon(latlngs, { color: 'red' }).addTo(map);
+                            // Crear el polígono y calcular el área con turf.js
+                            const polygon = L.polygon(latlngs, { color: 'red' }).addTo(map);
+                            // Convertir a formato GeoJSON para turf (coordenadas [lng, lat])
+                            const turfPolygon = turf.polygon([
+                                latlngs.map(([lat, lng]) => [lng, lat])
+                            ]);
+                            const areaM2 = turf.area(turfPolygon);
+                            const areaHa = areaM2 / 10000;
+                            polygon.bindTooltip(`${areaHa.toFixed(2)} ha`, { permanent: true, direction: 'center', className: 'area-label' }).openTooltip();
                         })
                         .catch(error => {
                             console.error('Error al procesar el KML:', error);
@@ -166,6 +179,75 @@ function fetchPadronData(padron) {
             document.getElementById('result').innerHTML = `<p class="error">Error: ${error.message}</p>`;
             document.getElementById('result').style.display = 'block';
         });
+}
+
+function openEditorOnline(kmlUrl) {
+    // Ocultar el contenedor principal
+    document.querySelector('.container').style.display = 'none';
+    
+    // Crear el contenedor del editor
+    const editorContainer = document.createElement('div');
+    editorContainer.id = 'editor-container';
+    
+    // Crear el mapa
+    const mapDiv = document.createElement('div');
+    mapDiv.id = 'editor-map';
+    editorContainer.appendChild(mapDiv);
+    
+    // Crear botón de regreso
+    const backButton = document.createElement('button');
+    backButton.className = 'editor-back-button';
+    backButton.textContent = 'Volver';
+    backButton.onclick = () => {
+        document.body.removeChild(editorContainer);
+        document.querySelector('.container').style.display = 'block';
+    };
+    editorContainer.appendChild(backButton);
+    
+    // Agregar el contenedor al body
+    document.body.appendChild(editorContainer);
+    
+    // Inicializar MapViewer
+    const mapViewer = new MapViewer({
+        center: [latitud, longitud],
+        zoom: 18,
+        minZoom: 5,
+        maxZoom: 21
+    });
+    
+    // Inicializar el mapa
+    mapViewer.init('editor-map', 'Google Satélite');
+    
+    // Mostrar la capa satelital por defecto
+    if (mapViewer.baseLayers && mapViewer.baseLayers['Google Satellite']) {
+        mapViewer.baseLayers['Google Satellite'].addTo(mapViewer.map);
+    }
+    
+    // Cargar el KML
+    fetch(kmlUrl)
+        .then(response => response.text())
+        .then(kmlText => {
+            const parser = new DOMParser();
+            const kmlDoc = parser.parseFromString(kmlText, 'text/xml');
+            const coordinates = kmlDoc.getElementsByTagName('coordinates')[0].textContent.trim().split(' ');
+            
+            // Crear un array de puntos
+            const points = coordinates.map(coord => {
+                const [lng, lat] = coord.split(',');
+                return [parseFloat(lat), parseFloat(lng)];
+            });
+            
+            // Crear y agregar el polígono
+            const polygon = L.polygon(points, {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.3
+            }).addTo(mapViewer.map);
+            
+            // Centrar el mapa en el polígono
+            mapViewer.map.fitBounds(polygon.getBounds());
+        })
+        .catch(error => console.error('Error al cargar el KML:', error));
 }
 
 // Consulta por geolocalización
@@ -216,3 +298,5 @@ document.getElementById('btn-consultar-manual').addEventListener('click', functi
 
     fetchPadronData(padron);
 });
+
+document.getElementById('editor-button').disabled = true;

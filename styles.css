@@ -78,7 +78,6 @@ button {
     border-radius: 0.8rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    width: 100%;
     margin: 0.5rem 0;
     box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
     position: relative;
@@ -94,6 +93,10 @@ button:hover:not(:disabled) {
     background: linear-gradient(45deg, #0056b3, #007BFF);
     transform: translateY(-0.2rem);
     box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.15);
+}
+
+.main-button {
+    width: 100%;
 }
 
 /* Result section styles */
@@ -134,7 +137,7 @@ button:hover:not(:disabled) {
 }
 
 /* Map controls */
-.map-button, .parcel-button, .padron-button {
+.map-button, .parcel-button, .padron-button, .editor-button {
     margin: 0.5rem 0;
     width: auto;
     padding: 0.8rem 1.5rem;
@@ -252,6 +255,50 @@ button:hover:not(:disabled) {
     }
 }
 
+/* Editor en línea */
+#editor-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: white;
+}
+
+#editor-map {
+    width: 100%;
+    height: 100%;
+}
+
+.editor-back-button, .export-dxf button, #toggle-layers-btn {
+    pointer-events: auto !important;
+    z-index: 10001 !important;
+}
+
+.editor-back-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    top: auto;
+    z-index: 10000;
+    padding: 10px 20px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.editor-back-button:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
 /* Pantallas muy grandes (opcional) */
 @media (min-width: 1440px) {
     .container {
@@ -263,3 +310,50 @@ button:hover:not(:disabled) {
         font-size: 2.8rem;
     }
 }
+
+/* Mantengo solo la personalización del botón de medir */
+.leaflet-control-measure-toggle {
+    background: #fff !important;
+    color: #333 !important;
+    border: 1px solid #3388ff !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    padding: 0 !important;
+    margin: 10px 0 0 10px !important;
+    font-size: 18px !important;
+    line-height: 36px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer !important;
+    z-index: 1000 !important;
+    transition: all 0.2s ease-in-out !important;
+    background-image: none !important;
+}
+
+.leaflet-control-measure-toggle:hover {
+    background: #f8f9fa !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+    background-image: none !important;
+}
+
+.leaflet-control-measure-toggle.active {
+    background: #3388ff !important;
+    color: white !important;
+    border-color: #2266bb !important;
+    background-image: none !important;
+}
+
+.leaflet-control-measure-toggle:active {
+    background: #2266bb !important;
+    color: white !important;
+    border-color: #1a4d8c !important;
+    transform: translateY(1px) !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
+    background-image: none !important;
+} 

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+    <title>Editor en Línea - Catastro Padrón</title>
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@0.7.5/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@0.7.5/dist/leaflet.js"></script>
+    
+    <!-- Leaflet Draw -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+    
+    <!-- Leaflet Measure -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-measure@3.1.0/dist/leaflet-measure.css" />
+    <script src="https://unpkg.com/leaflet-measure@3.1.0/dist/leaflet-measure.js"></script>
+    
+    <!-- shpjs para cargar archivos SHP -->
+    <script src="https://unpkg.com/shpjs@4.0.4/dist/shp.js"></script>
+    
+    <!-- Proj4js para conversión de coordenadas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.0/proj4.js"></script>
+    
+    <!-- FileSaver para descargar archivos -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <!-- Leaflet.KML para cargar archivos KML -->
+    <script src="https://unpkg.com/leaflet-kml@1.0.2/dist/leaflet-kml.js"></script>
+
+    <!-- Nuestro visor de mapa -->
+    <script src="map_viewer.js"></script>
+
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            overflow: hidden;
+        }
+        #map { 
+            position: absolute; 
+            top: 0; 
+            bottom: 0; 
+            width: 100%; 
+            height: 100%;
+        }
+        .coords {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background: white;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 1000;
+        }
+        .export-dxf {
+            position: absolute;
+            bottom: 60px;
+            right: 10px;
+            z-index: 1001;
+            background: white;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+        .export-dxf button {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 4px;
+            border: 1px solid #3388ff;
+            background: #3388ff;
+            color: white;
+            cursor: pointer;
+        }
+        .export-dxf button:hover {
+            background: #2b6cb0;
+        }
+        .leaflet-control-layers {
+            margin-top: 60px !important;
+        }
+        @media (max-width: 600px) {
+            .leaflet-control-layers {
+                display: none;
+            }
+            .leaflet-control-layers.mobile-visible {
+                display: block;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 80%;
+                max-width: 300px;
+                z-index: 1000;
+            }
+            #toggle-layers-btn {
+                display: flex !important;
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                z-index: 1000;
+                padding: 8px 16px;
+                background: white;
+                border: none;
+                border-radius: 4px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                cursor: pointer;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="coords" class="coords">Lat: --, Lng: --</div>
+    <div id="export-coords" class="export-dxf" style="bottom:110px; display:none;">
+        <button onclick="mapViewer.exportCoordsTXT()">Descargar coordenadas de los marcadores TXT</button>
+    </div>
+
+    <!-- Botón flotante para mostrar capas en móvil -->
+    <button id="toggle-layers-btn" style="display:none;" title="Mostrar capas">Capas</button>
+
+    <script>
+        // Crear una instancia del visor de mapa
+        const mapViewer = new MapViewer({
+            center: [-26.757886548112566, -65.23849401687397],
+            zoom: 18,
+            minZoom: 0,
+            maxZoom: 21
+        });
+
+        // Inicializar el mapa
+        mapViewer.init('map');
+
+        // Función para cargar KML desde URL
+        function loadKMLFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const kmlUrl = urlParams.get('kml');
+            if (kmlUrl) {
+                // Crear capa KML
+                const kmlLayer = L.tileLayer.kml(kmlUrl, {
+                    async: true
+                });
+                
+                // Agregar al mapa
+                kmlLayer.addTo(mapViewer.map);
+                
+                // Agregar al control de capas
+                mapViewer.generalOverlays["KML Cargado"] = kmlLayer;
+                mapViewer.generalLayersControl.addOverlay(kmlLayer, "KML Cargado");
+            }
+        }
+
+        // Cargar KML si existe en la URL
+        loadKMLFromURL();
+    </script>
+</body>
+</html> 
